@@ -13,11 +13,11 @@ public class CmpSorting {
         Employee.trace(employees);
 
         List<Employee> sortedEmps;
-        System.out.println("---- By Employee Number (Stream)");
-        sortedEmps = employees.stream()
-            .sorted(Employee.byEmpNo)
-            .collect(Collectors.toList());
-        Employee.trace(sortedEmps);
+//        System.out.println("---- By Employee Number (Stream)");
+//        sortedEmps = employees.stream()
+//            .sorted(Employee.byEmpNo)
+//            .collect(Collectors.toList());
+//        Employee.trace(sortedEmps);
 
         System.out.println("---- By Employee Number (Stream lambda)");
         sortedEmps = employees.stream()
@@ -31,6 +31,14 @@ public class CmpSorting {
         sortedEmps = employees.stream()
             .sorted(
                 (e1, e2) -> e1.firstName.compareTo(e2.firstName)
+            )
+            .collect(Collectors.toList());
+        Employee.trace(sortedEmps);
+
+        System.out.println("---- By Employee FirstName (Stream lambda case-insensitive)");
+        sortedEmps = employees.stream()
+            .sorted(
+                (e1, e2) -> e1.firstName.toLowerCase().compareTo(e2.firstName.toLowerCase())
             )
             .collect(Collectors.toList());
         Employee.trace(sortedEmps);

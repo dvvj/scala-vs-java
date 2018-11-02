@@ -3,7 +3,7 @@ package org.svj.streamVsScala;
 import java.util.*;
 
 class Employee {
-    final int empNo;
+    int empNo;
     final String firstName;
     final String lastName;
 
@@ -24,8 +24,8 @@ class Employee {
 
     final static Comparator<Employee> byEmpNo = new Comparator<Employee>() {
         @Override
-        public int compare(Employee o1, Employee o2) {
-            return o1.empNo - o2.empNo;
+        public int compare(Employee e1, Employee e2) {
+            return Integer.compare(e1.empNo, e2.empNo);
         }
     };
 
