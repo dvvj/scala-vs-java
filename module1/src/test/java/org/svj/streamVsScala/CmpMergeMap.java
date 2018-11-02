@@ -20,6 +20,7 @@ public class CmpMergeMap {
 
 
     public static void main(String[] args) {
+        Employee.trace(Employee.createTestList());
         List<Employee> dept1Employees = Employee.createTestList().stream()
             .filter(e -> !e.firstName.equalsIgnoreCase("Fred"))
             .map(e -> {
@@ -58,18 +59,18 @@ public class CmpMergeMap {
         System.out.println("----- Dept 2 LastName count Map size: " + dept2LastNameCount.size());
         traceMap(dept2LastNameCount);
 
-        Map<String, Integer> mergedLastNameCount = Stream.of(
-            dept1LastNameCount, dept2LastNameCount
-        ).map(Map::entrySet) // converts each map into an entry set
-            .flatMap(Collection::stream) // converts each set into an entry stream, then
+        Map<String, Integer> mergedLastNameCount =
+            Stream.of(dept1LastNameCount, dept2LastNameCount)
+                .map(Map::entrySet) // converts each map into an entry set
+                .flatMap(Collection::stream) // converts each set into an entry stream, then
                                          //  "concatenates" it in place of the original set
-            .collect(
-                Collectors.toMap(
-                    Map.Entry::getKey,
-                    Map.Entry::getValue,
-                    (a, b) -> a+b
-                )
-            );
+                .collect(
+                    Collectors.toMap(
+                        Map.Entry::getKey,
+                        Map.Entry::getValue,
+                        (a, b) -> a+b
+                    )
+                );
         System.out.println("----- Dept 1/2 merged LastName count Map size: " + dept2LastNameCount.size());
         traceMap(mergedLastNameCount);
     }

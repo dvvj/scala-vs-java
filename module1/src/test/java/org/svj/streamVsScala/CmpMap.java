@@ -21,10 +21,6 @@ public class CmpMap {
         System.out.print(b);
     }
 
-    static void ex2MergeCountMap() {
-
-    }
-
     public static void main(String[] args) {
         List<Employee> employees = Employee.createTestList();
 
@@ -36,13 +32,18 @@ public class CmpMap {
         traceMap(empNo2Emp);
         System.out.println("Map size: " + empNo2Emp.size());
 
-        System.out.println("----- Filtering Map: first name != 'Ann'");
-        Map<Integer, Employee> empNo2EmpWOAnn = empNo2Emp.entrySet().stream()
-            .filter(p -> !p.getValue().firstName.equalsIgnoreCase("Ann"))
-            .collect(Collectors.toMap(p -> p.getKey(), p -> p.getValue()));
-        traceMap(empNo2EmpWOAnn);
-        System.out.println("Map size: " + empNo2EmpWOAnn.size());
+        Map<String, List<Employee>> lastName2Emp = employees.stream()
+            .collect(
+                Collectors.groupingBy(emp -> emp.lastName)
+            );
+        Map<String, Integer> lastNameCount = lastName2Emp.entrySet().stream()
+            .collect(
+                Collectors.toMap(
+                    p -> p.getKey(), p -> p.getValue().size()
+                )
+            );
+        System.out.println("----- LastName count Map size: " + lastNameCount.size());
+        traceMap(lastNameCount);
 
-        ex2MergeCountMap();
     }
 }

@@ -15,8 +15,10 @@ object ScalaCmpMap extends App {
   println(s"----- Create Map: employee number -> employee")
   traceMap(empNo2Emp)
 
-  val empNo2EmpWOAnn = empNo2Emp.filter(!_._2.firstName.equalsIgnoreCase("Ann"))
-  println(s"----- Filtering Map: first name != 'Ann'")
-  traceMap(empNo2EmpWOAnn)
+  val lastNameCount = employeeList.map(_.lastName -> 1)
+    .groupBy(_._1)
+    .mapValues(_.map(_._2).sum)
+  println("----- LastName count:")
+  traceMap(lastNameCount)
 
 }

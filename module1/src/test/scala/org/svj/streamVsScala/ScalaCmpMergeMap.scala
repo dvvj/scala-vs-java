@@ -22,6 +22,7 @@ object ScalaCmpMergeMap extends App {
     .mapValues(_.map(_._2).sum)
   println("----- Dept 1 LastName count:")
   ScalaCmpMap.traceMap(dept1LastNameCount)
+
   val dept2LastNameCount = dept2Employees.map(_.lastName -> 1)
     .groupBy(_._1)
     .mapValues(_.map(_._2).sum)
