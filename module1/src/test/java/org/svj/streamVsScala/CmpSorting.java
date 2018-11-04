@@ -1,5 +1,7 @@
 package org.svj.streamVsScala;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -10,6 +12,7 @@ public class CmpSorting {
 
         System.out.println("---- By Employee Number");
         employees.sort(Employee.byEmpNo);
+        Collections.sort(employees, Employee.byEmpNo);
         Employee.trace(employees);
 
         List<Employee> sortedEmps;
@@ -22,7 +25,7 @@ public class CmpSorting {
         System.out.println("---- By Employee Number (Stream lambda)");
         sortedEmps = employees.stream()
             .sorted(
-                (e1, e2) -> Integer.compare(e1.empNo, e2.empNo)
+                Comparator.comparing(e -> e.firstName)
             )
             .collect(Collectors.toList());
         Employee.trace(sortedEmps);
@@ -30,7 +33,7 @@ public class CmpSorting {
         System.out.println("---- By Employee FirstName (Stream lambda)");
         sortedEmps = employees.stream()
             .sorted(
-                (e1, e2) -> e1.firstName.compareTo(e2.firstName)
+                Comparator.comparing(e -> e.firstName)
             )
             .collect(Collectors.toList());
         Employee.trace(sortedEmps);
@@ -38,7 +41,7 @@ public class CmpSorting {
         System.out.println("---- By Employee FirstName (Stream lambda case-insensitive)");
         sortedEmps = employees.stream()
             .sorted(
-                (e1, e2) -> e1.firstName.toLowerCase().compareTo(e2.firstName.toLowerCase())
+                Comparator.comparing(e -> e.firstName.toLowerCase())
             )
             .collect(Collectors.toList());
         Employee.trace(sortedEmps);
