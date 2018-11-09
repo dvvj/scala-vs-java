@@ -29,7 +29,7 @@ object Ex2NameParsing extends App {
 
   implicit val XmlNameParsing:NameParsing[XmlNameSrc] = new NameParsing[XmlNameSrc] {
     override def parse(t: XmlNameSrc): NameParsed = {
-      val foreNameParts = t.foreName.split("\\s+")
+      val foreNameParts = t.foreName.split("\\s+").filter(!_.isEmpty)
       val (firstName, middleName) =
         if (foreNameParts.length > 1)
           foreNameParts(0) -> Option(foreNameParts.tail.mkString(" "))
@@ -57,7 +57,7 @@ object Ex2NameParsing extends App {
 
   implicit val TxtNameParing:NameParsing[TxtNameSrc] = new NameParsing[TxtNameSrc] {
     override def parse(t: TxtNameSrc): NameParsed = {
-      val parts = t.fullName.split("\\s+")
+      val parts = t.fullName.split("\\s+").filter(!_.isEmpty)
       if (parts.length < 2)
         throw new IllegalArgumentException(s"At least 2 name parts required, actual: [$t]")
       else {
@@ -137,33 +137,33 @@ object Ex2NameParsing extends App {
 //  )
 //  tmp.parsed
 
-  implicit class ParseOps[A](val a:A) extends AnyVal {
-    def parsed(implicit evd:NameParsing[A]):NameParsed =
-      evd.parse(a)
-  }
-  val tmp = CsvNameSrc(
-    physicianFirstName = "John",
-    physicianMiddleName = "",
-    physicianLastName = "Smith"
-  )
-  tmp.parsed
-  println("---------- After adding ParseOps")
-  println(
-    XmlNameSrc(
-      foreName = "John R",
-      lastName = "Smith"
-    ).parsed
-  )
-  println(
-    CsvNameSrc(
-      physicianFirstName = "John",
-      physicianMiddleName = "R",
-      physicianLastName = "Smith"
-    ).parsed
-  )
-  println(
-    TxtNameSrc(
-      fullName = "John Smith"
-    ).parsed
-  )
+//  implicit class ParseOps[A](val a:A) extends AnyVal {
+//    def parsed(implicit evd:NameParsing[A]):NameParsed =
+//      evd.parse(a)
+//  }
+//  val tmp = CsvNameSrc(
+//    physicianFirstName = "John",
+//    physicianMiddleName = "",
+//    physicianLastName = "Smith"
+//  )
+//  tmp.parsed
+//  println("---------- After adding ParseOps")
+//  println(
+//    XmlNameSrc(
+//      foreName = "John R",
+//      lastName = "Smith"
+//    ).parsed
+//  )
+//  println(
+//    CsvNameSrc(
+//      physicianFirstName = "John",
+//      physicianMiddleName = "R",
+//      physicianLastName = "Smith"
+//    ).parsed
+//  )
+//  println(
+//    TxtNameSrc(
+//      fullName = "John Smith"
+//    ).parsed
+//  )
 }
