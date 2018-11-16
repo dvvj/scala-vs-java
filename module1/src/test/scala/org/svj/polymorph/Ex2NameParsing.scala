@@ -130,40 +130,54 @@ object Ex2NameParsing extends App {
 
 //  val str:String = "123"
 //  val i = str.toInt
-//  val tmp = parseName(
-//    TxtNameSrc(
-//      fullName = "John R Smith"
-//    )
+//  val tmp = TxtNameSrc(
+//    fullName = "John R Smith"
 //  )
 //  tmp.parsed
 
-//  implicit class ParseOps[A](val a:A) extends AnyVal {
-//    def parsed(implicit evd:NameParsing[A]):NameParsed =
-//      evd.parse(a)
-//  }
-//  val tmp = CsvNameSrc(
-//    physicianFirstName = "John",
-//    physicianMiddleName = "",
-//    physicianLastName = "Smith"
-//  )
-//  tmp.parsed
-//  println("---------- After adding ParseOps")
-//  println(
-//    XmlNameSrc(
-//      foreName = "John R",
-//      lastName = "Smith"
-//    ).parsed
-//  )
-//  println(
-//    CsvNameSrc(
-//      physicianFirstName = "John",
-//      physicianMiddleName = "R",
-//      physicianLastName = "Smith"
-//    ).parsed
-//  )
-//  println(
-//    TxtNameSrc(
-//      fullName = "John Smith"
-//    ).parsed
-//  )
+  implicit class ParseOps[A](val a:A) extends AnyVal {
+    def parsed(implicit evd:NameParsing[A]):NameParsed =
+      evd.parse(a)
+  }
+
+  println("---------- After adding ParseOps")
+  println(
+    XmlNameSrc(
+      foreName = "John R",
+      lastName = "Smith"
+    ).parsed
+  )
+  println(
+    CsvNameSrc(
+      physicianFirstName = "John",
+      physicianMiddleName = "R",
+      physicianLastName = "Smith"
+    ).parsed
+  )
+  println(
+    TxtNameSrc(
+      fullName = "John Smith"
+    ).parsed
+  )
+
+//  12.parsed
+
+  implicit val intNameParing:NameParsing[Int] = new NameParsing[Int] {
+    override def parse(t: Int): NameParsed = {
+      val str = t.toString
+      if (str.length < 2)
+        throw new IllegalArgumentException(s"At least 2 digits: but actual [$t]")
+      val firstName = str.head.toString
+      val lastName = str.last.toString
+      val middleName = str.substring(1, str.length-1)
+      NameParsed(
+        firstName,
+        if (middleName.isEmpty) None else Option(middleName),
+        lastName
+      )
+    }
+  }
+//
+  println(12.parsed)
+  println(123.parsed)
 }
